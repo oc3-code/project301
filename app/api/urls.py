@@ -9,5 +9,10 @@ urlpatterns = [
     path("product/", views.ProductListCreate.as_view(),name="product-list"),
     path("product/<int:pk>", views.ProductDetail.as_view(), name="product-detail"),
     path("order/", views.OrderListCreate.as_view(),name="order-list"),
-    path("order/<int:pk>", views.OrderDetail.as_view(), name="order-detail"),    
+    path("order/<int:pk>", views.OrderDetail.as_view(), name="order-detail"), 
+    path("orderproduct/", views.OrderProductListCreate.as_view(),name="order-product-list"),
+    path("orderproduct/order/<int:order_id>", views.order_items, name="order-product-list-by-order"),
+    path("orderproduct/<int:pk>", views.OrderProductDetail.as_view(), name="order-product-detail"),
+    path("orderproduct/order/<int:order_id>/product/<int:product_id>",
+     views.order_product_detail, name="order-product-detail-by-keys"),
 ]

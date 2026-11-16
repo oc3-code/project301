@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from decimal import Decimal
 
 # Create your models here.
 class UserType(models.Model):
@@ -45,4 +46,25 @@ class Order(models.Model):
     class Meta:
         db_table = "orders"
 
+class OrderProduct(models.Model):
+    order = models.ForeignKey(
+        "Order",
+        on_delete=models.CASCADE,
+        related_name="items",
+    )
+    product = models.ForeignKey(
+        "Product",
+        on_delete=models.PROTECT,
+        related_name="order_items",
+    )
+    quantity = models.IntegerField()
+    sale_price = models.DecimalField(max_digits=15, decimal_places=2)
 
+    class Meta:
+        db_table = "orders_products"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["order", "product"],
+                name="uniq_order_product",
+            ),
+        ]

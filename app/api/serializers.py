@@ -1,6 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
-from .models import UserType, User, Product, Order
+from .models import UserType, User, Product, Order, OrderProduct
 
 class UserTypeSerializer(serializers.ModelSerializer):
 
@@ -29,4 +29,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = "__all__"    
+        fields = "__all__"  
+
+class OrderProductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = OrderProduct
+        fields = "__all__" 
