@@ -15,4 +15,6 @@ urlpatterns = [
     path("orderproduct/<int:pk>", views.OrderProductDetail.as_view(), name="order-product-detail"),
     path("orderproduct/order/<int:order_id>/product/<int:product_id>",
      views.order_product_detail, name="order-product-detail-by-keys"),
+    path("shipment/", views.ShipmentListCreate.as_view(),name="shipment-list"),
+    path("shipment/<int:pk>", views.ShipmentDetail.as_view(), name="shipment-detail"), 
 ]

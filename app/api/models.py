@@ -68,3 +68,17 @@ class OrderProduct(models.Model):
                 name="uniq_order_product",
             ),
         ]
+
+class Shipment(models.Model):
+    carrier = models.CharField(max_length=128)
+    tracking_number = models.CharField(max_length=128)
+    shipped = models.DateTimeField(default=timezone.now)
+    # One-to-one: each shipment belongs to exactly one order
+    order = models.OneToOneField(
+        "Order",                      # or "orders.Order" if in another app
+        on_delete=models.CASCADE,
+        related_name="shipment",
+    )
+
+    class Meta:
+        db_table = "shipments"

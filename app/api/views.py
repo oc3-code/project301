@@ -3,8 +3,9 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserType, User, Product, Order, OrderProduct
-from .serializers import UserTypeSerializer, UserSerializer, ProductSerializer, OrderSerializer, OrderProductSerializer
+from .models import UserType, User, Product, Order, OrderProduct, Shipment
+from .serializers import (UserTypeSerializer, UserSerializer, ProductSerializer, 
+                          OrderSerializer, OrderProductSerializer, ShipmentSerializer)
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_GET
@@ -72,3 +73,11 @@ def order_product_detail(request, order_id, product_id):
     ser.is_valid(raise_exception=True)  # returns 400 with field errors
     ser.save()
     return Response(ser.data)
+
+class ShipmentListCreate(generics.ListCreateAPIView):
+    queryset = Shipment.objects.all()
+    serializer_class = ShipmentSerializer
+
+class ShipmentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Shipment.objects.all()
+    serializer_class = ShipmentSerializer  
