@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: estore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: estore
+  template:
+    metadata:
+      labels:
+        app: estore
+    spec:
+      containers:
+        - args:
+            - python
+            - manage.py
+            - runserver
+            - 0.0.0.0:8000
+          name: estore
+          image: estoreregistry.azurecr.io/estore:v4
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_HOST
+              value: "estore-server.postgres.database.azure.com"
+            - name: DB_USER
+              value: "************"
+            - name: DB_PASSWORD
+              value: "************"
+            - name: DB_NAME
+              value: "estore_db"
+            - name: DB_PORT
+              value: "5432"
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                      - estore
+              topologyKey: "kubernetes.io/hostname"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: estore-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8000
+  selector:
+    app: estore
